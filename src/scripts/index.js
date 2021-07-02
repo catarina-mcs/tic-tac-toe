@@ -19,11 +19,11 @@ function handleClick(e) {
     const squareIndex = squares.indexOf(e.target);
 
     if (player1Active) {
-        squares[squareIndex].textContent = 'x';
+        squares[squareIndex].innerHTML = '<p class="symbol x">x</p>';
         player1Sequence.push(squareIndex + 1);
         player1Sequence.length >= 3 && checkWinner();
     } else {
-        squares[squareIndex].textContent = 'o';
+        squares[squareIndex].innerHTML = '<p class="symbol y">o</p>';
         player2Sequence.push(squareIndex + 1);
         player2Sequence.length >= 3 && checkWinner();
     }
