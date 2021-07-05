@@ -1,27 +1,42 @@
 const squares = Array.from(document.getElementsByClassName('square'));
+const message = document.getElementById('message');
+const btnStatus = document.getElementById('btn-status');
 let player1Active = true;
-let player1Turns = 0;
-let player2Turns = 0;
+let clicks = 0;
 let flatMatrix = ['', '', '', '', '', '', '', '', ''];
 
-squares.forEach(square => square.addEventListener('click', handleClick));
+function startGame() {
+    player1Active = true;
+    clicks = 0;
+    flatMatrix = ['', '', '', '', '', '', '', '', ''];
 
-function handleClick(e) {
+    message.textContent = '';
+    btnStatus.textContent = '';
+
+    squares.forEach(square => {
+        square.addEventListener('click', placeSymbol);
+        square.innerHTML = '';
+    });
+}
+
+startGame();
+
+function placeSymbol(e) {
     const squareIndex = squares.indexOf(e.target);
 
     if (player1Active) {
         squares[squareIndex].innerHTML = '<p class="symbol x">x</p>';
         flatMatrix.splice(squareIndex, 1, 'x');
-        player1Turns++;
-        player1Turns >= 3 && checkGameStatus();
+        clicks++;
+        clicks >= 3 && checkGameStatus();
     } else {
         squares[squareIndex].innerHTML = '<p class="symbol y">o</p>';
         flatMatrix.splice(squareIndex, 1, 'o');
-        player2Turns++;
-        player2Turns >= 3 && checkGameStatus();
+        clicks++;
+        clicks >= 3 && checkGameStatus();
     }
 
-    e.target.removeEventListener('click', handleClick);
+    e.target.removeEventListener('click', placeSymbol);
     player1Active = !player1Active;
 }
 
@@ -53,12 +68,29 @@ function checkGameStatus() {
         });
 
         if (winningSequence) {
-            console.log('winner');
+            endGame('win');
             break;
         }
 
         if (sequence.filter(v => v === '').length >= 2) winneableSequences++;
     }
 
-    if (!winningSequence && winneableSequences === 0) console.log('game over');
+    if (!winningSequence && winneableSequences === 0) {
+        endGame('gameover');
+    }
+}
+
+function endGame(status) {
+    squares.forEach(square => square.removeEventListener('click', placeSymbol));
+
+    if (status === 'win') {
+        let winner = player1Active ? 'Player 1' : 'Player 2';
+        message.textContent = `${winner} has won this round!`;
+    }
+    if (status === 'gameover') {
+        message.textContent = 'The game is blocked.';
+    }
+
+    btnStatus.textContent = 'Play Again';
+    btnStatus.addEventListener('click', startGame);
 }
