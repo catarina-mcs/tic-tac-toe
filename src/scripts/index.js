@@ -11,30 +11,35 @@ function startGame() {
     flatMatrix = ['', '', '', '', '', '', '', '', ''];
 
     message.textContent = '';
-    btnStatus.textContent = '';
+    btnStatus.style.display = 'none';
+    btnStatus.removeEventListener('click', startGame);
 
     squares.forEach(square => {
         square.addEventListener('click', placeSymbol);
+        square.style.cursor = 'pointer';
         square.innerHTML = '';
+        square.classList.remove('x', 'o');
     });
 }
 
 startGame();
 
 function placeSymbol(e) {
+    console.log(player1Active);
     const squareIndex = squares.indexOf(e.target);
 
     if (player1Active) {
-        squares[squareIndex].innerHTML = '<p class="symbol x">x</p>';
+        squares[squareIndex].textContent = 'x';
+        squares[squareIndex].classList.add('x');
         flatMatrix.splice(squareIndex, 1, 'x');
-        clicks++;
-        clicks >= 3 && checkGameStatus();
     } else {
-        squares[squareIndex].innerHTML = '<p class="symbol y">o</p>';
+        squares[squareIndex].textContent = 'o';
+        squares[squareIndex].classList.add('o');
         flatMatrix.splice(squareIndex, 1, 'o');
-        clicks++;
-        clicks >= 3 && checkGameStatus();
     }
+
+    clicks++;
+    clicks >= 3 && checkGameStatus();
 
     e.target.removeEventListener('click', placeSymbol);
     player1Active = !player1Active;
@@ -81,7 +86,10 @@ function checkGameStatus() {
 }
 
 function endGame(status) {
-    squares.forEach(square => square.removeEventListener('click', placeSymbol));
+    squares.forEach(square => {
+        square.removeEventListener('click', placeSymbol);
+        square.style.cursor = 'none';
+    });
 
     if (status === 'win') {
         let winner = player1Active ? 'Player 1' : 'Player 2';
@@ -91,6 +99,6 @@ function endGame(status) {
         message.textContent = 'The game is blocked.';
     }
 
-    btnStatus.textContent = 'Play Again';
     btnStatus.addEventListener('click', startGame);
+    btnStatus.style.display = 'block';
 }
