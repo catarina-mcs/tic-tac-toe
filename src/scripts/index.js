@@ -1,17 +1,8 @@
 const squares = Array.from(document.getElementsByClassName('square'));
 let player1Active = true;
-let player1Sequence = [];
-let player2Sequence = [];
-let winningSequences = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [1, 4, 7],
-    [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7],
-];
+let player1Turns = 0;
+let player2Turns = 0;
+let flatMatrix = ['', '', '', '', '', '', '', '', ''];
 
 squares.forEach(square => square.addEventListener('click', handleClick));
 
@@ -20,47 +11,54 @@ function handleClick(e) {
 
     if (player1Active) {
         squares[squareIndex].innerHTML = '<p class="symbol x">x</p>';
-        player1Sequence.push(squareIndex + 1);
-        player1Sequence.length >= 3 && checkWinner();
+        flatMatrix.splice(squareIndex, 1, 'x');
+        player1Turns++;
+        player1Turns >= 3 && checkGameStatus();
     } else {
         squares[squareIndex].innerHTML = '<p class="symbol y">o</p>';
-        player2Sequence.push(squareIndex + 1);
-        player2Sequence.length >= 3 && checkWinner();
+        flatMatrix.splice(squareIndex, 1, 'o');
+        player2Turns++;
+        player2Turns >= 3 && checkGameStatus();
     }
 
     e.target.removeEventListener('click', handleClick);
     player1Active = !player1Active;
 }
 
-function checkWinner() {
-    let player1Wins, player2Wins, matches;
+function checkGameStatus() {
+    const matrixSize = Math.sqrt(flatMatrix.length);
+    let rows = [];
+    let columns;
+    let diagonals = [[], []];
+    let start = 0;
+    let end = matrixSize;
+    let winningSequence;
+    let winneableSequences = 0;
 
-    for (const sequence of winningSequences) {
-        matches = 0;
+    for (let i = 0; i < matrixSize; i++) {
+        rows.push(flatMatrix.slice(start, end));
+        diagonals[0].push(rows[i][i]);
+        diagonals[1].push(rows[i][matrixSize - 1 - i]);
+        start += matrixSize;
+        end += matrixSize;
+    }
 
-        if (player1Active) {
-            player1Sequence.forEach(value => {
-                if (sequence.includes(value)) matches++;
-            });
-        } else {
-            player2Sequence.forEach(value => {
-                if (sequence.includes(value)) matches++;
-            });
-        }
+    columns = rows[0].map((_, i) => rows.map(v => v[i]));
 
-        if (matches === 3) {
-            if (player1Active) player1Wins = true;
-            else player2Wins = true;
+    let sequences = rows.concat(columns).concat(diagonals);
+
+    for (let sequence of sequences) {
+        winningSequence = sequence.reduce((acc, value) => {
+            if (acc === value) return acc;
+        });
+
+        if (winningSequence) {
+            console.log('winner');
             break;
         }
+
+        if (sequence.filter(v => v === '').length >= 2) winneableSequences++;
     }
 
-    if (player1Wins || player2Wins) {
-        squares.forEach(square =>
-            square.removeEventListener('click', handleClick)
-        );
-        player1Wins
-            ? console.log('player 1 wins')
-            : console.log('player 2 wins');
-    }
+    if (!winningSequence && winneableSequences === 0) console.log('game over');
 }
