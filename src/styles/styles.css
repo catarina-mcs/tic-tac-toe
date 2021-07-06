@@ -4,6 +4,17 @@
     box-sizing: border-box;
 }
 
+:root {
+    --squareSize: 120px;
+}
+
+@media screen and (max-width: 1280px) {
+    :root {
+        font-size: 14px;
+        --squareSize: 100px;
+    }
+}
+
 body {
     background-color: #0f0326;
     font-family: 'Nunito', sans-serif;
@@ -40,6 +51,7 @@ body {
 h1 {
     font-size: 3.5rem;
     font-weight: 700;
+    margin-bottom: -0.5em;
 }
 
 #tic {
@@ -58,7 +70,7 @@ h1 {
     background-color: #f5f7dc;
     border-radius: 5px;
     padding: 1em 1.5em;
-    width: 430px;
+    width: calc(var(--squareSize) * 3.6);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -91,16 +103,17 @@ h1 {
 }
 
 .grid {
-    width: 364px;
+    width: calc(var(--squareSize) * 3);
     display: flex;
     flex-wrap: wrap;
     position: relative;
-    border: 2px solid #f5f7dc;
+    border: 1px solid #f5f7dc;
+    box-sizing: content-box;
 }
 
 .square {
-    width: 120px;
-    height: 120px;
+    width: var(--squareSize);
+    height: var(--squareSize);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,29 +127,29 @@ h1 {
 }
 
 .hline {
-    width: 360px;
-    height: 2px;
+    width: calc(var(--squareSize) * 3);
+    height: 1px;
 }
 
 .vline {
-    width: 2px;
-    height: 360px;
+    width: 1px;
+    height: calc(var(--squareSize) * 3);
 }
 
 #hline1 {
-    top: 120px;
+    top: var(--squareSize);
 }
 
 #hline2 {
-    bottom: 120px;
+    bottom: var(--squareSize);
 }
 
 #vline1 {
-    left: 120px;
+    left: var(--squareSize);
 }
 
 #vline2 {
-    right: 120px;
+    right: var(--squareSize);
 }
 
 .game-status {
