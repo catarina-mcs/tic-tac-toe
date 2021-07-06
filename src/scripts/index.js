@@ -32,7 +32,6 @@ function startGame() {
 startGame();
 
 function placeSymbol(e) {
-    console.log(player1Active);
     const squareIndex = squares.indexOf(e.target);
 
     if (player1Active) {
@@ -85,7 +84,13 @@ function checkGameStatus() {
             break;
         }
 
-        if (sequence.filter(v => v === '').length >= 2) winneableSequences++;
+        const emptySquares = sequence.filter(v => v === '').length;
+
+        if (emptySquares >= 2) winneableSequences++;
+        else if (emptySquares === 1) {
+            const newSequence = sequence.filter(v => v !== '');
+            newSequence[0] === newSequence[1] && winneableSequences++;
+        }
     }
 
     if (!winningSequence && winneableSequences === 0) {
