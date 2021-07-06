@@ -6,9 +6,19 @@ const scoreX = document.getElementById('score-x');
 const scoreO = document.getElementById('score-o');
 let player1Active = true;
 let clicks = 0;
-let flatMatrix = ['', '', '', '', '', '', '', '', ''];
 let player1Score = 0;
 let player2Score = 0;
+let flatMatrix = ['', '', '', '', '', '', '', '', ''];
+let winningSequences = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+];
 
 function startGame() {
     player1Active = true;
@@ -24,6 +34,7 @@ function startGame() {
         square.style.cursor = 'pointer';
         square.innerHTML = '';
         square.classList.remove('x', 'o');
+        square.style.backgroundColor = '#0f0326';
     });
 
     btnReset.addEventListener('click', resetScore);
@@ -74,21 +85,24 @@ function checkGameStatus() {
 
     let sequences = rows.concat(columns).concat(diagonals);
 
-    for (let sequence of sequences) {
-        winningSequence = sequence.reduce((acc, value) => {
+    for (let i = 0; i < sequences.length; i++) {
+        winningSequence = sequences[i].reduce((acc, value) => {
             if (acc === value) return acc;
         });
 
         if (winningSequence) {
+            winningSequences[i].forEach(num => {
+                squares[num].style.backgroundColor = '#e65f5c';
+            });
             endGame('win');
             break;
         }
 
-        const emptySquares = sequence.filter(v => v === '').length;
+        const emptySquares = sequences[i].filter(v => v === '').length;
 
         if (emptySquares >= 2) winneableSequences++;
         else if (emptySquares === 1) {
-            const newSequence = sequence.filter(v => v !== '');
+            const newSequence = sequences[i].filter(v => v !== '');
             newSequence[0] === newSequence[1] && winneableSequences++;
         }
     }

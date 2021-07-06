@@ -91,10 +91,11 @@ h1 {
 }
 
 .grid {
-    width: 360px;
+    width: 364px;
     display: flex;
     flex-wrap: wrap;
     position: relative;
+    border: 2px solid #f5f7dc;
 }
 
 .square {
