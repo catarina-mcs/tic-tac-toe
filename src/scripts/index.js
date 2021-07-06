@@ -101,5 +101,5 @@ function endGame(status) {
     }
 
     btnStatus.addEventListener('click', startGame);
-    btnStatus.style.display = 'block';
+    btnStatus.style.display = 'inline-block';
 }
