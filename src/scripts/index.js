@@ -42,6 +42,7 @@ function placeSymbol(e) {
     clicks >= 3 && checkGameStatus();
 
     e.target.removeEventListener('click', placeSymbol);
+    e.target.style.cursor = 'default';
     player1Active = !player1Active;
 }
 
@@ -88,7 +89,7 @@ function checkGameStatus() {
 function endGame(status) {
     squares.forEach(square => {
         square.removeEventListener('click', placeSymbol);
-        square.style.cursor = 'none';
+        square.style.cursor = 'default';
     });
 
     if (status === 'win') {
