@@ -8,15 +8,38 @@ body {
     background-color: #0f0326;
     font-family: 'Nunito', sans-serif;
     color: #f5f7dc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100vh;
 }
 
-header {
-    margin: 6em auto 10em;
-    text-align: center;
+.btn,
+.score-square {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn {
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+.x {
+    color: #ffff82;
+}
+
+.o {
+    color: #b5d99c;
 }
 
 h1 {
     font-size: 3.5rem;
+    font-weight: 700;
 }
 
 #tic {
@@ -31,9 +54,44 @@ h1 {
     color: #b5d99c;
 }
 
+.game-score {
+    background-color: #f5f7dc;
+    border-radius: 5px;
+    padding: 1em 1.5em;
+    width: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.score-block {
+    display: flex;
+    align-items: center;
+    width: 100px;
+}
+
+.score-square {
+    background-color: #0f0326;
+    font-size: 1.8rem;
+    width: 39px;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.score {
+    color: #0f0326;
+    margin-left: 0.5em;
+}
+
+#btn-reset {
+    background-color: #0f0326;
+    color: #f5f7dc;
+}
+
 .grid {
     width: 360px;
-    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     position: relative;
@@ -43,20 +101,10 @@ h1 {
     width: 120px;
     height: 120px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
-}
-
-.symbol {
-    font-size: 6rem;
-}
-
-.x {
-    color: #ffff82;
-}
-
-.o {
-    color: #b5d99c;
+    font-size: 5rem;
+    font-weight: 600;
 }
 
 .line {
@@ -91,8 +139,7 @@ h1 {
 }
 
 .game-status {
-    text-align: center;
-    margin-top: 4em;
+    height: 39px;
 }
 
 #message {
@@ -102,11 +149,5 @@ h1 {
 #btn-status {
     background-color: #f5f7dc;
     color: #0f0326;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 5px;
-    padding: 0.5em 1em;
     margin-left: 1em;
-    cursor: pointer;
 }

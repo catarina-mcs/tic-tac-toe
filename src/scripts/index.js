@@ -1,9 +1,14 @@
 const squares = Array.from(document.getElementsByClassName('square'));
 const message = document.getElementById('message');
 const btnStatus = document.getElementById('btn-status');
+const btnReset = document.getElementById('btn-reset');
+const scoreX = document.getElementById('score-x');
+const scoreO = document.getElementById('score-o');
 let player1Active = true;
 let clicks = 0;
 let flatMatrix = ['', '', '', '', '', '', '', '', ''];
+let player1Score = 0;
+let player2Score = 0;
 
 function startGame() {
     player1Active = true;
@@ -20,6 +25,8 @@ function startGame() {
         square.innerHTML = '';
         square.classList.remove('x', 'o');
     });
+
+    btnReset.addEventListener('click', resetScore);
 }
 
 startGame();
@@ -29,11 +36,11 @@ function placeSymbol(e) {
     const squareIndex = squares.indexOf(e.target);
 
     if (player1Active) {
-        squares[squareIndex].textContent = 'x';
+        squares[squareIndex].textContent = 'X';
         squares[squareIndex].classList.add('x');
         flatMatrix.splice(squareIndex, 1, 'x');
     } else {
-        squares[squareIndex].textContent = 'o';
+        squares[squareIndex].textContent = 'O';
         squares[squareIndex].classList.add('o');
         flatMatrix.splice(squareIndex, 1, 'o');
     }
@@ -93,8 +100,17 @@ function endGame(status) {
     });
 
     if (status === 'win') {
-        let winner = player1Active ? 'Player 1' : 'Player 2';
-        message.textContent = `${winner} has won this round!`;
+        if (player1Active) {
+            message.textContent = 'Player 1 has won this round!';
+            player1Score++;
+            let word = player1Score === 1 ? 'win' : 'wins';
+            scoreX.textContent = `${player1Score} ${word}`;
+        } else {
+            message.textContent = 'Player 2 has won this round!';
+            player2Score++;
+            let word = player2Score === 1 ? 'win' : 'wins';
+            scoreO.textContent = `${player2Score} ${word}`;
+        }
     }
     if (status === 'gameover') {
         message.textContent = 'The game is blocked.';
@@ -102,4 +118,13 @@ function endGame(status) {
 
     btnStatus.addEventListener('click', startGame);
     btnStatus.style.display = 'inline-block';
+}
+
+function resetScore() {
+    player1Score = 0;
+    player2Score = 0;
+    scoreX.textContent = '0 wins';
+    scoreO.textContent = '0 wins';
+    btnReset.removeEventListener('click', resetScore);
+    startGame();
 }
