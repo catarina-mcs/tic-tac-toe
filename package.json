@@ -4,7 +4,8 @@
     "description": "a tic-tac-toe game",
     "scripts": {
         "dev": "parcel src/index.html",
-        "build": "parcel build src/index.html --public-url ./ "
+        "build": "parcel build src/index.html --public-url ./ ",
+        "deploy": "gh-pages -d dist"
     },
     "repository": {
         "type": "git",
@@ -23,5 +24,8 @@
     "devDependencies": {
         "eslint": "^7.29.0",
         "parcel": "^2.0.0-rc.0"
+    },
+    "dependencies": {
+        "gh-pages": "^3.2.3"
     }
 }
